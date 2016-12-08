@@ -8,14 +8,14 @@ from getCurrencyRates import getCurrencyRates
 
 conf = {
     "eur_12h": {
-        "title": "EUR to CNY rates",
+        "title": "EUR to CNY Exchange Rates",
         "timespan": (0, -43200),
         "c1s": ['eur'],
         "c2": "cny",
         "xformat": "%H:%M",
     },
     "eur_usd_7d": {
-        "title": "EUR/USD to CNY rates",
+        "title": "EUR/USD to CNY Exchange Rates",
         "timespan": (0, -86400*7),
         "c1s": ['eur'],
         "c2": "cny",
@@ -40,13 +40,15 @@ def plot(data, title):
     plotdata += datastr + '\ne\n'
     plotcmds.append('"-" using 1:2 title "%s" with lines' % title)
 
-def endPlot(xformat, output):
+def endPlot(title, xformat, output):
     global plotdata, plotcmds
     script = """
 reset
 
 set term png size 400,300 font "Verdana,9"
 set output "%s.png"
+
+set title "%s"
 
 set xdata time
 set timefmt "%%s"
@@ -58,6 +60,7 @@ plot %s
 %s
 """ % (
         output,
+        title,
         xformat,
         ','.join(plotcmds),
         plotdata
@@ -73,7 +76,6 @@ for filename in conf:
     newPlot()
 
     prof = conf[filename]
-    title = prof['title']
     t1, t2 = prof['timespan']
     c2 = prof['c2']
     for c1 in prof['c1s']:
@@ -83,4 +85,4 @@ for filename in conf:
         data = [(i['time'], i[rkey]) for i in data]
         plot(data, rkey)
 
-    endPlot(prof["xformat"], filename)
+    endPlot(prof["title"], prof["xformat"], filename)
