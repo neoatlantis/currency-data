@@ -3,3 +3,4 @@ apikey
 *.pyc
 *.png
 .temp.gp
+currencies.db
