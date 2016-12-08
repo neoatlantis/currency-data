@@ -24,7 +24,7 @@ for key in db:
     timestamp = float(key)
     if timestamp > latest:
         latest = timestamp
-if time.time() - latest < 3600 and 'force' not in sys.argv:
+if time.time() - latest < 3000 and 'force' not in sys.argv:
     print "You are requesting too frequent. Abandoned to prevent API",
     print "exhaustion. Use `force` in command line to force a request."
     db.close()
