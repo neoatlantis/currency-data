@@ -37,13 +37,15 @@ try:
     req = requests.get(url)
     if req.status_code != 200: raise
     json = req.json()
+    json = {
+        'rates': json['rates'],
+        'timestamp': json['timestamp']
+    }
 except:
     print "Failed fetching newest data. Abort."
     sys.exit(3)
 
-delkeys = [u'license', u'disclaimer']
-for each in delkeys:
-    if json.has_key(each): del json[each]
+print json
 
 db[str(time.time())] = json
 db.close()
